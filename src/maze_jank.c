@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T Maze_T
+#define T      Maze_T
+#define NNEIGH 4
 
 struct Cell {
-	struct Cell *connected[4];
+	struct Cell *connected[NNEIGH];
 	struct Coords coords;
 	bool visited;
 };
@@ -43,11 +44,11 @@ draw(struct T *maze, char *canvas, int height, int width)
 		i = canva_coords.i;
 		j = canva_coords.j;
 		canvas[j + width * i] = ' ';
-		for (neigh = cell->connected, k = 4; *neigh && k;
+		for (neigh = cell->connected, k = NNEIGH; *neigh && k;
 		     --k, ++neigh) {
-			int i_ = i + (*neigh)->coords.i - cell->coords.i;
-			int j_ = j + (*neigh)->coords.j - cell->coords.j;
-			canvas[j_ + width * i_] = ' ';
+			int ih = i + (*neigh)->coords.i - cell->coords.i;
+			int jh = j + (*neigh)->coords.j - cell->coords.j;
+			canvas[jh + width * ih] = ' ';
 		}
 	}
 	canvas[height * width] = '\0';
@@ -64,7 +65,7 @@ draw(struct T *maze, char *canvas, int height, int width)
 */
 
 static int
-add_neighbor(struct Cell *temp, struct Cell *cell, int *n, struct Cell **c)
+try_add_neighbor(struct Cell *temp, struct Cell *cell, int *n, struct Cell **c)
 {
 	struct Coords path;
 	path = Coords_sub(temp->coords, cell->coords);
@@ -79,7 +80,7 @@ add_neighbor(struct Cell *temp, struct Cell *cell, int *n, struct Cell **c)
 static struct Cell *
 find_neighbor(struct Cell *const cell, struct T *maze)
 {
-	struct Cell **c, *neigh[4], *temp;
+	struct Cell **c, *neigh[NNEIGH], *temp;
 	int cols, len;
 	int n = 0;
 	c = neigh;
@@ -88,19 +89,19 @@ find_neighbor(struct Cell *const cell, struct T *maze)
 
 	temp = cell + cols;
 	if (temp < maze->cells + len)
-		if (add_neighbor(temp, cell, &n, c))
+		if (try_add_neighbor(temp, cell, &n, c))
 			++c;
 	temp = cell + 1;
 	if (temp < maze->cells + len)
-		if (add_neighbor(temp, cell, &n, c))
+		if (try_add_neighbor(temp, cell, &n, c))
 			++c;
 	temp = cell - cols;
 	if (temp >= maze->cells)
-		if (add_neighbor(temp, cell, &n, c))
+		if (try_add_neighbor(temp, cell, &n, c))
 			++c;
 	temp = cell - 1;
 	if (temp >= maze->cells)
-		if (add_neighbor(temp, cell, &n, c))
+		if (try_add_neighbor(temp, cell, &n, c))
 			++c;
 	if (!n)
 		return NULL;
@@ -129,6 +130,17 @@ generate(struct T *maze)
 		}
 	}
 	Stack_destory(stack);
+}
+
+static char *
+canvas_create(int height, int width)
+{
+	char *canvas;
+	if ((canvas = malloc((height * width + 1) * sizeof(char))) == NULL) {
+		printf("Error: calloc in maze_display didnt work");
+		exit(0);
+	}
+	return canvas;
 }
 
 struct T *
@@ -169,13 +181,11 @@ Maze_destroy(struct T *maze)
 void
 Maze_display(struct T *maze, char wall)
 {
-	int height = 2 * maze->rows + 1, width = 2 * maze->cols + 1;
-	int i;
+	int i, height, width;
 	char *canvas, *c;
-	if ((canvas = malloc((height * width + 1) * sizeof(char))) == NULL) {
-		printf("Error: calloc in maze_display didnt work");
-		exit(0);
-	}
+	height = 2 * maze->rows + 1;
+	width = 2 * maze->cols + 1;
+	canvas = canvas_create(height, width);
 	for (i = 0; i < height * width; ++i)
 		canvas[i] = wall;
 	canvas[i] = '\0';
