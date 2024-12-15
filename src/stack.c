@@ -1,15 +1,17 @@
-#include "Mace/cell_stack.h"
-#include "cell.h"
-#include "cell_stack.h"
+/*
+ * if this used Cell specifically then it should be in the file with cells
+ * NOT in stack
+ */
+#include "stack.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T Mace_Stack_T
+#define T Stack_T
 
 struct elem {
-	struct Mace_Cell *cell;
+	void *item;
 	struct elem *link;
 };
 
@@ -19,7 +21,7 @@ struct T {
 };
 
 struct T *
-Mace_stack_create()
+Stack_create()
 {
 	struct T *stack;
 	if ((stack = malloc(sizeof(*stack))) == NULL) {
@@ -31,7 +33,7 @@ Mace_stack_create()
 }
 
 void
-Mace_stack_destory(struct T *stack)
+Stack_destory(struct T *stack)
 {
 	assert(stack);
 	for (struct elem *next, *head = stack->head; head; head = next) {
@@ -41,23 +43,25 @@ Mace_stack_destory(struct T *stack)
 	free(stack);
 }
 
-struct Mace_Cell *
-Mace_stack_pop(struct T *stack)
+void *
+Stack_pop(struct T *stack)
 {
 	struct elem *e;
-	struct Mace_Cell *cell;
+	void *item;
 
-	assert(stack && stack->count);
+	assert(stack);
+	if (stack->count < 1)
+		return NULL;
 	e = stack->head;
 	stack->head = e->link;
 	stack->count--;
-	cell = e->cell;
+	item = e->item;
 	free(e);
-	return cell;
+	return item;
 }
 
 void
-Mace_stack_push(struct T *stack, struct Mace_Cell *cell)
+Stack_push(struct T *stack, void *item)
 {
 	struct elem *e;
 
@@ -65,14 +69,14 @@ Mace_stack_push(struct T *stack, struct Mace_Cell *cell)
 		printf("Error: malloc failed in stack push");
 		exit(1);
 	}
-	e->cell = cell;
+	e->item = item;
 	e->link = stack->head;
 	stack->head = e;
 	stack->count++;
 }
 
 size_t
-Mace_stack_length(struct T *stack)
+Stack_length(struct T *stack)
 {
 	return stack->count;
 }

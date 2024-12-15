@@ -1,7 +1,7 @@
 CC = gcc
 BUILD = build
 BIN   = bin
-FILES = src/main.c src/Mace/cell_stack.c
+FILES = src/main.c src/stack.c src/maze_jank.c
 INC = -Isrc -Iinclude
 EXE   = a.out
 CFLAGS = -g
@@ -16,5 +16,5 @@ $(BUILD)/$(EXE): $(FILES)
 clean:
 	rm $(BIN)/$(EXE)
 
-run: 
+run:
 	@$(BIN)/$(EXE)

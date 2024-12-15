@@ -1,0 +1,11 @@
+#ifndef MAZE_H
+#define MAZE_H
+
+#define T Maze_T
+typedef struct T *T;
+
+T Maze_create(int n, int m);
+void Maze_destory(T maze);
+void Maze_display(T maze, char wall);
+
+#endif // MACE_H
