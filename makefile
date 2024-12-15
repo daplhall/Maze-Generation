@@ -1,7 +1,7 @@
 CC = gcc
 BUILD = build
 BIN   = bin
-FILES = src/main.c src/stack.c src/maze_jank.c
+FILES = src/main.c src/stack.c src/maze_jank.c src/coords.c
 INC = -Isrc -Iinclude
 EXE   = a.out
 CFLAGS = -g
