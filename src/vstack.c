@@ -1,19 +1,10 @@
-#include "stack.h"
+#include "vstack.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T Stack_T
-
-enum item_type {
-	STACK_CHAR = 0,
-	STACK_INT,
-	STACK_LONG,
-	STACK_POINTER,
-	STACK_FLOAT,
-	STACK_DOUBLE
-};
+#define T VStack_T
 
 struct elem {
 	union {
@@ -24,7 +15,7 @@ struct elem {
 		int item_d;
 		char item_c;
 	};
-	enum item_type type;
+	enum VStack_item_type type;
 	struct elem *link;
 };
 
@@ -63,7 +54,7 @@ VStack_pop(struct T *stack, void *out)
 	struct elem *e;
 
 	assert(stack);
-	assert(stack->count < 1);
+	assert(stack->count > 0);
 	e = stack->head;
 	stack->head = e->link;
 	stack->count--;
@@ -81,17 +72,17 @@ VStack_pop(struct T *stack, void *out)
 		*(void **)out = e->item_p;
 		break;
 	case STACK_FLOAT:
-		*(char *)out = e->item_f;
+		*(float *)out = e->item_f;
 		break;
 	case STACK_DOUBLE:
-		*(char *)out = e->item_lf;
+		*(double *)out = e->item_lf;
 		break;
 	}
 	free(e);
 }
 
 void
-VStack_push(struct T *stack, void *item, enum item_type type)
+VStack_push(struct T *stack, void *item, enum VStack_item_type type)
 {
 	struct elem *e;
 
@@ -125,6 +116,107 @@ VStack_push(struct T *stack, void *item, enum item_type type)
 		e->item_lf = *(double *)item;
 		break;
 	}
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+void
+VStack_push_char(T stack, char item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_CHAR;
+	e->item_c = item;
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+
+void
+VStack_push_int(T stack, int item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_INT;
+	e->item_d = item;
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+
+void
+VStack_push_long(T stack, long item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_LONG;
+	e->item_ld = item;
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+
+void
+VStack_push_pointer(T stack, void *item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_POINTER;
+	e->item_p = item;
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+
+void
+VStack_push_float(T stack, float item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_FLOAT;
+	e->item_f = item;
+	e->link = stack->head;
+	stack->head = e;
+	stack->count++;
+}
+
+void
+VStack_push_double(T stack, double item)
+{
+	struct elem *e;
+
+	if ((e = malloc(sizeof(*e))) == NULL) {
+		printf("Error: malloc failed in stack push");
+		exit(1);
+	}
+
+	e->type = STACK_DOUBLE;
+	e->item_lf = item;
 	e->link = stack->head;
 	stack->head = e;
 	stack->count++;
