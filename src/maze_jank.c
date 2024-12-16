@@ -30,7 +30,7 @@ coords_to_canvas(struct Coords coords)
 }
 
 static char *
-draw(struct T *maze, char *canvas, int height, int width)
+draw_cells(struct T *maze, char *canvas, int height, int width)
 {
 	struct Cell *cell;
 	int len = maze->cols * maze->rows;
@@ -189,7 +189,7 @@ Maze_display(struct T *maze, char wall)
 	for (i = 0; i < height * width; ++i)
 		canvas[i] = wall;
 	canvas[i] = '\0';
-	canvas = draw(maze, canvas, height, width);
+	canvas = draw_cells(maze, canvas, height, width);
 	for (c = canvas, i = 1; *c; ++i) {
 		if (i % (width + 1) == 0) {
 			putchar('\n');
