@@ -1,10 +1,10 @@
 CC = gcc
 BUILD = build
 BIN   = bin
-FILES = src/main.c src/stack.c src/maze_jank.c src/coords.c
+FILES = src/main.c src/stack.c src/vstack.c src/maze_jank.c src/coords.c
 INC = -Isrc -Iinclude
 EXE   = a.out
-CFLAGS = -g -Wunused-variable -Wreturn-type
+CFLAGS = -g -Wunused-variable -Werror=return-type -Werror=unused-variable
 
 .PHONY: all clean
 
