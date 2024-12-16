@@ -1,9 +1,10 @@
+#include "maze_jank.h"
 #include "coords.h"
-#include "maze.h"
 #include "stack.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 
 #define T      Maze_T
 #define NNEIGH 4

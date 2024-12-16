@@ -1,7 +1,3 @@
-/*
- * if this used Cell specifically then it should be in the file with cells
- * NOT in stack
- */
 #include "stack.h"
 #include <assert.h>
 #include <ctype.h>
@@ -30,6 +26,7 @@ Stack_create()
 	}
 	stack->head = NULL;
 	stack->count = 0;
+	return stack;
 }
 
 void
