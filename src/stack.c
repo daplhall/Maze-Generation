@@ -1,3 +1,8 @@
+/*
+	Another impelemnation of this is where the type value is not stored
+	in the element but rather in the stack, so the stack is 1 type
+
+*/
 #include "stack.h"
 #include <assert.h>
 #include <ctype.h>

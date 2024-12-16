@@ -59,22 +59,22 @@ VStack_pop(struct T *stack, void *out)
 	stack->head = e->link;
 	stack->count--;
 	switch (e->type) {
-	case STACK_CHAR:
+	case VSTACK_CHAR:
 		*(char *)out = e->item_c;
 		break;
-	case STACK_INT:
+	case VSTACK_INT:
 		*(int *)out = e->item_d;
 		break;
-	case STACK_LONG:
+	case VSTACK_LONG:
 		*(long *)out = e->item_ld;
 		break;
-	case STACK_POINTER:
+	case VSTACK_POINTER:
 		*(void **)out = e->item_p;
 		break;
-	case STACK_FLOAT:
+	case VSTACK_FLOAT:
 		*(float *)out = e->item_f;
 		break;
-	case STACK_DOUBLE:
+	case VSTACK_DOUBLE:
 		*(double *)out = e->item_lf;
 		break;
 	}
@@ -91,27 +91,27 @@ VStack_push(struct T *stack, void *item, enum VStack_item_type type)
 		exit(1);
 	}
 	switch (type) {
-	case STACK_CHAR:
+	case VSTACK_CHAR:
 		e->type = type;
 		e->item_c = *(char *)item;
 		break;
-	case STACK_INT:
+	case VSTACK_INT:
 		e->type = type;
 		e->item_d = *(int *)item;
 		break;
-	case STACK_LONG:
+	case VSTACK_LONG:
 		e->type = type;
 		e->item_ld = *(long *)item;
 		break;
-	case STACK_POINTER:
+	case VSTACK_POINTER:
 		e->type = type;
 		e->item_p = *(void **)item;
 		break;
-	case STACK_FLOAT:
+	case VSTACK_FLOAT:
 		e->type = type;
 		e->item_f = *(float *)item;
 		break;
-	case STACK_DOUBLE:
+	case VSTACK_DOUBLE:
 		e->type = type;
 		e->item_lf = *(double *)item;
 		break;
@@ -130,7 +130,7 @@ VStack_push_char(T stack, char item)
 		exit(1);
 	}
 
-	e->type = STACK_CHAR;
+	e->type = VSTACK_CHAR;
 	e->item_c = item;
 	e->link = stack->head;
 	stack->head = e;
@@ -147,7 +147,7 @@ VStack_push_int(T stack, int item)
 		exit(1);
 	}
 
-	e->type = STACK_INT;
+	e->type = VSTACK_INT;
 	e->item_d = item;
 	e->link = stack->head;
 	stack->head = e;
@@ -164,7 +164,7 @@ VStack_push_long(T stack, long item)
 		exit(1);
 	}
 
-	e->type = STACK_LONG;
+	e->type = VSTACK_LONG;
 	e->item_ld = item;
 	e->link = stack->head;
 	stack->head = e;
@@ -181,7 +181,7 @@ VStack_push_pointer(T stack, void *item)
 		exit(1);
 	}
 
-	e->type = STACK_POINTER;
+	e->type = VSTACK_POINTER;
 	e->item_p = item;
 	e->link = stack->head;
 	stack->head = e;
@@ -198,7 +198,7 @@ VStack_push_float(T stack, float item)
 		exit(1);
 	}
 
-	e->type = STACK_FLOAT;
+	e->type = VSTACK_FLOAT;
 	e->item_f = item;
 	e->link = stack->head;
 	stack->head = e;
@@ -215,7 +215,7 @@ VStack_push_double(T stack, double item)
 		exit(1);
 	}
 
-	e->type = STACK_DOUBLE;
+	e->type = VSTACK_DOUBLE;
 	e->item_lf = item;
 	e->link = stack->head;
 	stack->head = e;

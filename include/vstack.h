@@ -7,12 +7,12 @@
 typedef struct T *T;
 
 enum VStack_item_type {
-	STACK_CHAR = 0,
-	STACK_INT,
-	STACK_LONG,
-	STACK_POINTER,
-	STACK_FLOAT,
-	STACK_DOUBLE
+	VSTACK_CHAR = 0,
+	VSTACK_INT,
+	VSTACK_LONG,
+	VSTACK_POINTER,
+	VSTACK_FLOAT,
+	VSTACK_DOUBLE
 };
 
 T VStack_create();

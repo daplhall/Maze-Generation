@@ -1,6 +1,7 @@
-#include "maze_jank.h"
+#include "maze_old.h"
 #include "coords.h"
 #include "stack.h"
+#include "vstack.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +30,7 @@ coords_to_canvas(struct Coords coords)
 	return new_coords;
 }
 
-static char *
+static void
 draw_cells(struct T *maze, char *canvas, int height, int width)
 {
 	struct Cell *cell;
@@ -52,7 +53,40 @@ draw_cells(struct T *maze, char *canvas, int height, int width)
 		}
 	}
 	canvas[height * width] = '\0';
-	return canvas;
+}
+
+static void
+draw_solution(Stack_T solution, char path, char *canvas, int height, int width)
+{
+	struct Cell *cell, *prev = NULL;
+	bool start = true;
+
+	while ((cell = Stack_pop(solution)) != NULL) {
+		int i, j;
+		struct Coords canva_coord;
+		canva_coord = coords_to_canvas(cell->coords);
+		i = canva_coord.i;
+		j = canva_coord.j;
+		if (start) {
+			canvas[j + width * i] = 'E';
+			start = false;
+		} else if (Stack_length(solution) == 0) {
+			canvas[j + width * i] = 'S';
+		} else {
+			canvas[j + width * i] = path;
+		}
+		if (prev) {
+			struct Coords diff;
+			int di, dj;
+
+			diff = Coords_sub(prev->coords, cell->coords);
+			di = i + diff.i;
+			dj = j + diff.j;
+			canvas[dj + width * di] = path;
+			// fill connection
+		}
+		prev = cell;
+	}
 }
 
 static int
@@ -117,11 +151,40 @@ generate(struct T *maze)
 			for (i = 0; cell->connected[i]; ++i)
 				;
 			cell->connected[i] = neigh;
+			neigh->connected[0] = cell;
 			Stack_push(stack, cell);
 			Stack_push(stack, neigh);
 		}
 	}
 	Stack_destory(stack);
+}
+
+Stack_T
+solve(struct T *maze, struct Cell *const end)
+{
+	VStack_T i_stack;
+	Stack_T c_stack;
+	struct Cell *cell;
+
+	i_stack = VStack_create();
+	c_stack = Stack_create();
+
+	VStack_push_int(i_stack, 0);
+	Stack_push(c_stack, maze->cells);
+	while ((cell = Stack_pop(c_stack)) != NULL) {
+
+		int i;
+		VStack_pop(i_stack, &i);
+		if (cell == end)
+			return c_stack;
+		if (i > 3 || !cell->connected[i])
+			continue;
+		VStack_push_int(i_stack, i + 1);
+		Stack_push(c_stack, cell);
+		VStack_push_int(i_stack, 1);
+		Stack_push(c_stack, cell->connected[i]);
+	}
+	return 0;
 }
 
 static char *
@@ -133,6 +196,29 @@ canvas_create(int height, int width)
 		exit(0);
 	}
 	return canvas;
+}
+
+static void
+canvas_fill(char *canvas, char fillament, int height, int width)
+{
+	int i;
+
+	for (i = 0; i < height * width; ++i)
+		canvas[i] = fillament;
+	canvas[i] = '\0';
+}
+static void
+canvas_display(char *canvas, int width)
+{
+	char *c;
+	int i;
+	for (c = canvas, i = 1; *c; ++i) {
+		if (i % (width + 1) == 0) {
+			putchar('\n');
+		} else {
+			putchar(*c++);
+		}
+	}
 }
 
 struct T *
@@ -173,22 +259,36 @@ Maze_destroy(struct T *maze)
 void
 Maze_display(struct T *maze, char wall)
 {
-	int i, height, width;
-	char *canvas, *c;
+	int height, width;
+	char *canvas;
 
 	height = 2 * maze->rows + 1;
 	width = 2 * maze->cols + 1;
 	canvas = canvas_create(height, width);
-	for (i = 0; i < height * width; ++i)
-		canvas[i] = wall;
-	canvas[i] = '\0';
-	canvas = draw_cells(maze, canvas, height, width);
-	for (c = canvas, i = 1; *c; ++i) {
-		if (i % (width + 1) == 0) {
-			putchar('\n');
-		} else {
-			putchar(*c++);
-		}
+	canvas_fill(canvas, wall, height, width);
+	draw_cells(maze, canvas, height, width);
+	canvas_display(canvas, width);
+	free(canvas);
+}
+
+void
+Maze_solution(struct T *maze, char wall, char path)
+{
+	Stack_T solution;
+	int height, width;
+	char *canvas;
+
+	height = 2 * maze->rows + 1;
+	width = 2 * maze->cols + 1;
+	canvas = canvas_create(height, width);
+	canvas_fill(canvas, wall, height, width);
+	draw_cells(maze, canvas, height, width);
+	if ((solution = solve(
+		 maze, maze->cells + maze->rows * maze->cols - 1)) == NULL) {
+		printf("Error: No solution found in maze_solutuon\n");
+	} else {
+		draw_solution(solution, path, canvas, height, width);
 	}
+	canvas_display(canvas, width);
 	free(canvas);
 }
