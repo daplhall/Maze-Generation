@@ -55,17 +55,9 @@ draw_cells(struct T *maze, char *canvas, int height, int width)
 	return canvas;
 }
 
-// returns null if no non visited neighbors else return pointer
-/*
-	There is a problem in here eg. that in a 3x3 2,0 points to 1,2 because
-	they are next to one another in the data. This implementation needs to
-	be update such that the norm:
-	1. |sum(temp.coords - cell.coords)| <= 1
-	2. temp is within maze->cells + len
-*/
-
 static int
-try_add_neighbor(struct Cell *temp, struct Cell *cell, int *n, struct Cell **c)
+try_add_neighbor(
+    struct Cell *const temp, struct Cell *const cell, int *n, struct Cell **c)
 {
 	struct Coords path;
 	path = Coords_sub(temp->coords, cell->coords);
@@ -78,7 +70,7 @@ try_add_neighbor(struct Cell *temp, struct Cell *cell, int *n, struct Cell **c)
 }
 
 static struct Cell *
-find_neighbor(struct Cell *const cell, struct T *maze)
+find_neighbor(struct Cell *const cell, struct T *const maze)
 {
 	struct Cell **c, *neigh[NNEIGH], *temp;
 	int cols, len;
@@ -183,6 +175,7 @@ Maze_display(struct T *maze, char wall)
 {
 	int i, height, width;
 	char *canvas, *c;
+
 	height = 2 * maze->rows + 1;
 	width = 2 * maze->cols + 1;
 	canvas = canvas_create(height, width);
