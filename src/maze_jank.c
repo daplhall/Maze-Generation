@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #define T      Maze_T
 #define NNEIGH 4
 
@@ -102,7 +101,7 @@ find_neighbor(struct Cell *const cell, struct T *const maze)
 	return neigh[n];
 }
 
-static int
+static void
 generate(struct T *maze)
 {
 	Stack_T stack;
@@ -141,7 +140,7 @@ Maze_create(int rows, int cols)
 {
 	struct T *maze;
 	struct Cell *cells;
-	int i, len = rows * cols;
+	int len = rows * cols;
 	if ((maze = malloc(sizeof(*maze))) == NULL) {
 		printf("Error: malloc failed in maze create\n");
 		exit(1);
