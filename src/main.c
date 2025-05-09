@@ -16,7 +16,7 @@ main(int argc, char *argv[])
 	printf("%d\n", t);
 
 	Maze_T maze;
-	maze = Maze_create(30, 30);
+	maze = Maze_create(6, 24);
 	Maze_solution(maze, '@', '*');
 	// Maze_display(maze, '@');
 	Maze_destroy(maze);
