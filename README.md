@@ -1,5 +1,6 @@
 # Maze generator
-A simple maze generator written in, with a visualizer for the command prompt.
+A simple maze generator written in, with a visualizer for the command prompt.  
+
 Here is an example generated ascii maze with it solution starting at `S` and ending at `E`
 ```
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
