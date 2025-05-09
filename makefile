@@ -1,7 +1,7 @@
 CC = gcc
 BUILD = build
-BIN   = bin
-FILES = src/main.c src/stack.c src/vstack.c src/maze_old.c src/coords.c
+BIN   = maze.out
+FILES = src/main.c src/stack.c src/vstack.c src/maze.c src/coords.c
 INC = -Isrc -Iinclude
 EXE   = a.out
 CFLAGS = -g -Wunused-variable -Werror=return-type -Werror=unused-variable -Werror=overflow
@@ -12,7 +12,7 @@ all : $(BUILD)/$(EXE)
 
 $(BUILD)/$(EXE): $(FILES)
 	$(CC) -o $@ $+ $(CFLAGS) $(INC)
-	mv $(BUILD)/$(EXE) $(BIN) 
+	mv $(BUILD)/$(EXE) $(BIN)
 clean:
 	rm $(BIN)/$(EXE)
 

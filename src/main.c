@@ -1,4 +1,4 @@
-#include "maze_old.h"
+#include "maze.h"
 #include "stack.h"
 #include "vstack.h"
 #include <stdio.h>
