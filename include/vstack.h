@@ -1,6 +1,10 @@
 #ifndef STACKV_H
 #define STACKV_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ctype.h>
 
 #define T VStack_T
@@ -28,4 +32,8 @@ void VStack_push_double(T stack, double item);
 size_t VStack_length(T stack);
 
 #undef T
+
+#ifdef __cplusplus
+}
+#endif
 #endif // MACE_CELL_STACK_H
