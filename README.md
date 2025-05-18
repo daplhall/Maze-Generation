@@ -1,5 +1,6 @@
 # Maze generator
-A simple maze generator written in, with a visualizer for the command prompt.  
+A simple maze generator written in  C. It can generate a random maze, solve it, and display it to the command prompt. 
+This was done as a small for fun project.
 
 Here is an example generated ascii maze with it solution starting at `S` and ending at `E`
 ```
@@ -18,11 +19,11 @@ Here is an example generated ascii maze with it solution starting at `S` and end
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ```
 # Building
-Make a build folder eg.
+Make a build folder
 ```
 $ mkdir build
 ```
-then simply call the makefile, given you have gcc installed.
+then simply call the makefile
 ```
 $ make
 ```
