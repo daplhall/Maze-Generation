@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T Stack_T
+#define T Stack
 
 struct elem {
 	void *item;

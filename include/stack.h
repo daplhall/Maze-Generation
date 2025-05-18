@@ -7,7 +7,7 @@ extern "C" {
 
 #include <ctype.h>
 
-#define T Stack_T
+#define T Stack
 typedef struct T *T;
 
 T Stack_create();

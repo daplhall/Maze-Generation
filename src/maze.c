@@ -56,7 +56,7 @@ draw_cells(struct T *maze, char *canvas, int height, int width)
 }
 
 static void
-draw_solution(Stack_T solution, char path, char *canvas, int height, int width)
+draw_solution(Stack solution, char path, char *canvas, int height, int width)
 {
 	struct Cell *cell, *prev = NULL;
 	bool start = true;
@@ -138,7 +138,7 @@ find_neighbor(struct Cell *const cell, struct T *const maze)
 static void
 generate(struct T *maze)
 {
-	Stack_T stack;
+	Stack stack;
 	struct Cell *cell, *neigh;
 
 	stack = Stack_create();
@@ -159,11 +159,11 @@ generate(struct T *maze)
 	Stack_destory(stack);
 }
 
-Stack_T
+Stack
 solve(struct T *maze, struct Cell *const end)
 {
 	Valstack i_stack;
-	Stack_T c_stack;
+	Stack c_stack;
 	struct Cell *cell;
 
 	i_stack = Valstack_create();
@@ -274,7 +274,7 @@ Maze_display(struct T *maze, char wall)
 void
 Maze_solution(struct T *maze, char wall, char path)
 {
-	Stack_T solution;
+	Stack solution;
 	int height, width;
 	char *canvas;
 
