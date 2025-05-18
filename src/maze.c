@@ -178,7 +178,7 @@ solve(struct T *maze, struct Cell *const end)
 		Valstack_pop(visited_stack, &i);
 		if (cell == end)
 			return cell_stack;
-		if (i > 3 || !cell->connected[i])
+		if (i > 3 || cell->connected[i] == NULL)
 			continue;
 		Valstack_push_int(visited_stack, i + 1);
 		Stack_push(cell_stack, cell);
