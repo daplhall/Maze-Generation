@@ -2,6 +2,7 @@
 #include "coords.h"
 #include "stack.h"
 #include "valstack.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -162,29 +163,29 @@ generate(struct T *maze)
 Stack
 solve(struct T *maze, struct Cell *const end)
 {
-	Valstack i_stack;
-	Stack c_stack;
+	Valstack visited_stack;
+	Stack cell_stack;
 	struct Cell *cell;
 
-	i_stack = Valstack_create();
-	c_stack = Stack_create();
+	visited_stack = Valstack_create();
+	cell_stack = Stack_create();
 
-	Valstack_push_int(i_stack, 0);
-	Stack_push(c_stack, maze->cells);
-	while ((cell = Stack_pop(c_stack)) != NULL) {
+	Valstack_push_int(visited_stack, 0);
+	Stack_push(cell_stack, maze->cells);
+	while ((cell = Stack_pop(cell_stack)) != NULL) {
 
 		int i;
-		Valstack_pop(i_stack, &i);
+		Valstack_pop(visited_stack, &i);
 		if (cell == end)
-			return c_stack;
+			return cell_stack;
 		if (i > 3 || !cell->connected[i])
 			continue;
-		Valstack_push_int(i_stack, i + 1);
-		Stack_push(c_stack, cell);
-		Valstack_push_int(i_stack, 1);
-		Stack_push(c_stack, cell->connected[i]);
+		Valstack_push_int(visited_stack, i + 1);
+		Stack_push(cell_stack, cell);
+		Valstack_push_int(visited_stack, 1);
+		Stack_push(cell_stack, cell->connected[i]);
 	}
-	return 0;
+	assert(0);
 }
 
 static char *
