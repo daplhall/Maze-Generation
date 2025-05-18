@@ -1,7 +1,7 @@
 #include "maze.h"
 #include "coords.h"
 #include "stack.h"
-#include "vstack.h"
+#include "valstack.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -162,26 +162,26 @@ generate(struct T *maze)
 Stack_T
 solve(struct T *maze, struct Cell *const end)
 {
-	VStack_T i_stack;
+	Valstack i_stack;
 	Stack_T c_stack;
 	struct Cell *cell;
 
-	i_stack = VStack_create();
+	i_stack = Valstack_create();
 	c_stack = Stack_create();
 
-	VStack_push_int(i_stack, 0);
+	Valstack_push_int(i_stack, 0);
 	Stack_push(c_stack, maze->cells);
 	while ((cell = Stack_pop(c_stack)) != NULL) {
 
 		int i;
-		VStack_pop(i_stack, &i);
+		Valstack_pop(i_stack, &i);
 		if (cell == end)
 			return c_stack;
 		if (i > 3 || !cell->connected[i])
 			continue;
-		VStack_push_int(i_stack, i + 1);
+		Valstack_push_int(i_stack, i + 1);
 		Stack_push(c_stack, cell);
-		VStack_push_int(i_stack, 1);
+		Valstack_push_int(i_stack, 1);
 		Stack_push(c_stack, cell->connected[i]);
 	}
 	return 0;

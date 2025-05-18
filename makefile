@@ -1,9 +1,8 @@
 CC = gcc
 BUILD = build
-BIN   = maze.out
-FILES = src/main.c src/stack.c src/vstack.c src/maze.c src/coords.c
+FILES = src/main.c src/stack.c src/valstack.c src/maze.c src/coords.c
 INC = -Isrc -Iinclude
-EXE   = a.out
+EXE   = maze.out
 CFLAGS = -g -Wunused-variable -Werror=return-type -Werror=unused-variable -Werror=overflow
 
 .PHONY: all clean
@@ -12,7 +11,7 @@ all : $(BUILD)/$(EXE)
 
 $(BUILD)/$(EXE): $(FILES)
 	$(CC) -o $@ $+ $(CFLAGS) $(INC)
-	mv $(BUILD)/$(EXE) $(BIN)
+	mv $(BUILD)/$(EXE) $(EXE)
 clean:
 	rm $(BIN)/$(EXE)
 
